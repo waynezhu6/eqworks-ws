@@ -1,25 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
+import './App.scss';
+import styles from './styles/App.module.scss';
+import Navbar from './components/Navbar';
+import DataTable from './components/DataTable';
+import Map from './components/Map';
+import { getAllApiData } from './lib/api';
+import { generateEvents, formatDates } from './lib/utils';
 
-function App() {
+const App = () => {
+
+  //store api data here
+  const [data, setData] = useState({
+    "events_daily": [],
+    "events_hourly": [],
+    "stats_daily": [],
+    "stats_hourly": [],
+    "poi": []
+  });
+
+  useEffect(() => {
+    const getData = async() => {
+      setData(await getAllApiData());
+    }
+    getData();
+
+  }, []);
+
+  console.log(generateEvents(data));
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.body}>
+      <Router>
+        <Navbar/>
+
+        <Switch>
+
+          <Route path="/visualizations">
+            <DataTable data={data}/>
+          </Route>
+
+          <Route path="/datatable"></Route>
+
+          <Route path="/map">
+            <Map data={data.poi}/>
+          </Route>
+
+          <Redirect to="/map"/>
+
+        </Switch>
+      </Router>
     </div>
   );
+
 }
 
 export default App;
