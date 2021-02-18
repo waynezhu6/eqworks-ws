@@ -41,6 +41,7 @@ const App = () => {
         {data ? 
           <>
             <Navbar/>
+            <div className={styles.placeholder}/>
             <Switch>
               <Route path="/visualizations"><Visualizations data={data}/></Route>
               <Route path="/datatable"><DataTable data={data}/></Route>

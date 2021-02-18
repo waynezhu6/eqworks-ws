@@ -61,7 +61,7 @@ const Map = ({ data }) => {
   }
 
   return (
-    <div style={{flex: 1}}>
+    <div className={styles.body}>
 
       <MapOverlay 
         selected={selected}
