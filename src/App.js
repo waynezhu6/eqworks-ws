@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter,
   Switch,
   Route,
   Redirect
@@ -36,27 +36,29 @@ const App = () => {
   }, []);
 
   return (
-    <div className={styles.body}>
-      {data ? 
-        <Router>
-          <Navbar/>
-          <Switch>
-            <Route path="/visualizations"><Visualizations data={data}/></Route>
-            <Route path="/datatable"><DataTable data={data}/></Route>
-            <Route path="/map"><Map data={data}/></Route>
-            <Redirect to="/datatable"/>
-          </Switch>
-        </Router>
+    <HashRouter>
+      <div className={styles.body}>
+        {data ? 
+          <>
+            <Navbar/>
+            <Switch>
+              <Route path="/visualizations"><Visualizations data={data}/></Route>
+              <Route path="/datatable"><DataTable data={data}/></Route>
+              <Route path="/map"><Map data={data}/></Route>
+              <Redirect to="/visualizations"/>
+            </Switch>
+          </>
 
-      :
+        :
 
-        <BounceLoader 
-          size={60}
-          css={{ margin: "auto", transform: "translateY(30vh)" }}
-          color={"#959595"}
-        />
-      }
-    </div>
+          <BounceLoader 
+            size={60}
+            css={{ margin: "auto", transform: "translateY(30vh)" }}
+            color={"#959595"}
+          />
+        }
+      </div>
+    </HashRouter>
   );
 
 }

@@ -73,7 +73,7 @@ const Map = ({ data }) => {
         minZoom={1}
         maxZoom={16}
         onViewportChange={nextViewport => setViewport(nextViewport)}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+        mapboxApiAccessToken={"pk.eyJ1Ijoid2F5bmV6IiwiYSI6ImNrbDdmN3BtcTJteWsyb3BsNGt0YmpnZmYifQ.A-To5_8sa_6FqSTUW5TG1g"}
         ref={map}
       >
         {clusters.map((p, index) => {
