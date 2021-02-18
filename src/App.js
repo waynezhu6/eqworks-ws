@@ -13,7 +13,7 @@ import Map from './pages/Map';
 import { getAllApiData } from './lib/api';
 import BounceLoader from 'react-spinners/BounceLoader';
 import Visualizations from './pages/Visualizations';
-import { generateEvents, generatePoints, generateStats, mergeDateHour } from './lib/utils';
+import { generateEvents, generatePoints, generateStats, mergeDateHour, sort } from './lib/utils';
 
 const App = () => {
 
@@ -28,8 +28,9 @@ const App = () => {
       generateStats(res);
       generatePoints(res);
       mergeDateHour(res);
-      console.log(res);
+      sort(res);
       setData(res);
+      console.log(res);
     }
     getData();
   }, []);

@@ -26,11 +26,11 @@ const Map = ({ data }) => {
   }, []);
 
   const [selected, setSelected] = useState({});
-  const [from, setFrom] = useState(new Date("01/01/2017"));
-  const [to, setTo] = useState(new Date());
+  const [from, setFrom] = useState(new Date("12/31/2016"));
+  const [to, setTo] = useState(new Date("02/01/2017"));
   const [results, setResults] = useState(getEventsInRange(data, from, to));
   let markers = data.markers;
-  
+
   const bounds = map.current
     ? map.current
         .getMap()
@@ -46,12 +46,26 @@ const Map = ({ data }) => {
     options: { radius: 75, maxZoom: 16 },
   });
 
+  const setDates = (date, isFrom) => {
+    if(isFrom){
+      setFrom(date);
+      setResults(getEventsInRange(data, date, to));
+    }
+    else{
+      setTo(date);
+      setResults(getEventsInRange(data, from, date));
+    }
+  }
+
   return (
     <div style={{flex: 1}}>
 
       <MapOverlay 
         selected={selected}
         results={results}
+        from={from}
+        to={to}
+        setDates={setDates}
       />
 
       <ReactMapGL
@@ -109,7 +123,7 @@ const Map = ({ data }) => {
                     setSelected(p);
                   }}
                 >
-                  {p.name}
+                  {p.name} - {results[p.name].length}
                 </div>
               </Marker>
             );

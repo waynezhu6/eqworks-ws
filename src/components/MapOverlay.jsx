@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-date-picker';
+import moment from 'moment';
 import styles from '../styles/components/MapOverlay.module.scss';
 
-const MapOverlay = ({ selected, results }) => {
-
-  const [from, setFrom] = useState(new Date("01/01/2017"));
-  const [to, setTo] = useState(new Date());
+const MapOverlay = ({ selected, results, from, to, setDates }) => {
 
   let numEvents = selected.name ? results[selected.name].length + " events in range" : "";
-  let recent = selected.name ? results[selected.name][0].date : "";
+  let recent = selected.name ? "Last: " + moment(results[selected.name][0].date).format("MMMM Do, YYYY - h A") : "";
 
   return(
     <div className={styles.body}>
@@ -20,7 +18,7 @@ const MapOverlay = ({ selected, results }) => {
         <div className={styles.picker}>
           <span>From: </span> 
           <DatePicker 
-            onChange={setFrom} 
+            onChange={(d) => setDates(d, true)} 
             value={from}
             maxDate={to}
           />
@@ -28,15 +26,13 @@ const MapOverlay = ({ selected, results }) => {
         <div className={styles.picker}>
           <span>To: </span> 
           <DatePicker 
-            onChange={setTo} 
+            onChange={(d) => setDates(d, false)} 
             value={to}
             minDate={from}
           />
         </div>
-      </div>
 
-      <div className={styles.display}>
-        <div className={styles.title}>
+        <div className={styles.name}>
           {selected.name}
         </div>
         <div className={styles.field}>

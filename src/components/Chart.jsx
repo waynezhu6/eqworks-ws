@@ -16,12 +16,11 @@ const Chart = ({ dataZoomedOut, dataZoomedIn, field, title, label, max, maxZoom 
 
   const getSeries = (data, timeFormat) => {
     return new TimeSeries({
-      name: "events_daily",
+      name: "id_" + field,
       columns: ["index", "value"],
-      points: data.map(v => [
-        Index.getIndexString(timeFormat, new Date(v.date)),
-        v[field].toString()
-      ])
+      points: data.map(v => {
+        return [Index.getIndexString(timeFormat, new Date(v.date)), v[field].toString()]
+      })
     });
   }
 
@@ -32,8 +31,11 @@ const Chart = ({ dataZoomedOut, dataZoomedIn, field, title, label, max, maxZoom 
   const style = styler([{ key: "value", color: "#D6D6D6", highlight: '#A3A3A3' }]);
 
   let infoValues = [];
-  if(highlight)
+  if(highlight){
     infoValues = [{label, value: highlight.event.get(highlight.column)}];
+    if(label = "Revenue")
+      infoValues = [{label, value: parseInt(highlight.event.get(highlight.column)).toFixed(2)}];
+  }
 
   const handleTimeRangeChanged = (t) => {
     if(t.duration() < 1000 * 60 * 60 * 24 * 5 && !zoomed){
@@ -55,10 +57,11 @@ const Chart = ({ dataZoomedOut, dataZoomedIn, field, title, label, max, maxZoom 
           utc={true}
           timeAxisTickCount={6}
           timeRange={timeRange}
-          // format={(d) => moment(d).format("MMM Do")}
           title={title}
           enablePanZoom={true}
           onTimeRangeChanged={handleTimeRangeChanged}
+          minTime={new Date("12/31/2016")}
+          maxTime={new Date("02/11/2017")}
         >
           <ChartRow height="300">
             <YAxis

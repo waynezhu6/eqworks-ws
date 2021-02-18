@@ -30,7 +30,7 @@ function generateStats(data){
     return { 
       ...v, 
       ...formatDates(v.date),
-      revenue: `$${parseInt(v.revenue).toFixed(2)}`
+      // revenue: `$${parseInt(v.revenue).toFixed(2)}`
     };
   });
   data.stats_hourly = stats.reverse();
@@ -95,4 +95,12 @@ function rand(min, max){
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export { generateEvents, generateStats, generatePoints, mergeDateHour };
+function sort(data){
+  // ensures data is chronologically ordered
+  data.events_hourly.sort((a, b) => new Date(a.date) - new Date(b.date));
+  data.events_daily.sort((a, b) => new Date(a.date) - new Date(b.date));
+  data.stats_hourly.sort((a, b) => new Date(a.date) - new Date(b.date));
+  data.stats_daily.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+export { generateEvents, generateStats, generatePoints, mergeDateHour, sort };
