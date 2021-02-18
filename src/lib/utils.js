@@ -30,7 +30,7 @@ function generateStats(data){
     return { 
       ...v, 
       ...formatDates(v.date),
-      // revenue: `$${parseInt(v.revenue).toFixed(2)}`
+      revenue: parseInt(v.revenue).toFixed(2)
     };
   });
   data.stats_hourly = stats.reverse();

@@ -72,7 +72,7 @@ const CONFIG = [
         { Header: "Time", accessor: "hour" },
         { Header: "Impressions", accessor: "impressions" },
         { Header: "Clicks", accessor: "clicks" },
-        { Header: "Revenue", accessor: "revenue" }
+        { Header: "Revenue ($)", accessor: "revenue" }
       ]
     }],
     field: "stats_hourly"
