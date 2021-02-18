@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
+import useSupercluster from 'use-supercluster';
+import MapOverlay from '../components/MapOverlay';
+import getEventsInRange from '../lib/map';
+import styles from '../styles/pages/Map.module.scss';
+
 import ReactMapGL, { FlyToInterpolator, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import useSupercluster from 'use-supercluster';
-import { generateEvents, generatePoints } from '../lib/utils';
-import MapOverlay from '../components/MapOverlay';
-import styles from '../styles/pages/Map.module.scss';
-import getEventsInRange from '../lib/map';
+import mapboxgl from 'mapbox-gl';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const Map = ({ data }) => {
 

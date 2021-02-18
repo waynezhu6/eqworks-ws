@@ -4,8 +4,6 @@ import styles from '../styles/pages/Visualizations.module.scss';
 
 const Visualizations = ({ data }) => {
 
-  console.log(data);
-
   return(
     <div className={styles.body}>
 
