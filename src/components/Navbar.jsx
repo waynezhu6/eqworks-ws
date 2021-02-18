@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/Navbar.module.scss';
+import styles from '../styles/components/Navbar.module.scss';
 import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {

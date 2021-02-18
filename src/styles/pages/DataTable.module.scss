@@ -1,0 +1,29 @@
+.body{
+  flex: 1;
+  padding: 24px;
+
+  .navbar{
+    width: 100%;
+
+    div{
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 500;
+      margin-left: 24px;
+      cursor: pointer;
+      color: #BFBFBF;
+      user-select: none;
+    }
+
+    .selected{
+      color: black;
+      font-weight: 500;
+    }
+
+  }
+}
+
+.table{
+  font-size: 14px;
+  margin-top: 20px;
+}

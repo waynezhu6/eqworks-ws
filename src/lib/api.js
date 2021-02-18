@@ -7,7 +7,7 @@ const getAllApiData = async() => {
     "stats_daily": await getDailyStats(),
     "stats_hourly": await getHourlyStats(),
     "poi": await getPOI()
-  }
+  };
 }
 
 const getEndpoint = async(endpoint) => {
