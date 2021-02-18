@@ -1,9 +1,10 @@
-import React, { useMemo, memo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { useTable, useSortBy, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { matchSorter } from 'match-sorter';
 import styles from '../styles/components/Table.module.scss';
 
-const fuzzyTextFilter = (rows, id, filterValue) => {
+const globalFilter = (rows, id, filterValue) => {
+  filterValue = filterValue.trim();
   if (!filterValue || !filterValue.length)
     return rows;
 
@@ -11,20 +12,15 @@ const fuzzyTextFilter = (rows, id, filterValue) => {
   if(!terms)
     return rows;
 
-  console.log(filterValue);
-
   return terms.reduceRight((results, term) => 
-    matchSorter(results, term, { keys: [row => row.values[id]] }), rows);
-    
-  // return matchSorter(rows, filterValue, { keys: [row => row.values[id]] })
+    matchSorter(results, term, {keys: id.map(v => 'values.' + v)}), 
+    rows
+  );
 }
 
-fuzzyTextFilter.autoRemove = val => !val;
+globalFilter.autoRemove = val => !val;
 
 const Table = ({config, data, visible}) => {
-  const filterTypes = useMemo(() => ({
-    fuzzyText: fuzzyTextFilter
-  }))
 
   const columns = useMemo(() => config, []);
 
@@ -37,7 +33,7 @@ const Table = ({config, data, visible}) => {
     state,
     preGlobalFilteredRows,
     setGlobalFilter
-  } = useTable({columns, data, filterTypes}, useGlobalFilter, useSortBy);
+  } = useTable({columns, data, globalFilter}, useGlobalFilter, useSortBy);
 
   return (
     <div style={!visible ? {display: "none"} : {}}>
@@ -85,9 +81,9 @@ const Table = ({config, data, visible}) => {
   );
 }
 
-function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }){
+const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
   const count = preGlobalFilteredRows.length
-  const [value, setValue] = React.useState(globalFilter)
+  const [value, setValue] = useState(globalFilter)
   const onChange = useAsyncDebounce(value => {
     setGlobalFilter(value || undefined)
   }, 200)
@@ -100,7 +96,7 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }){
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`Search ${count} rows by year, date, place, etc...`}
+        placeholder={`Search ${count} rows (Hint: chain searches by space-seperating i.e. 2017 11AM)`}
         
       />
     </div>

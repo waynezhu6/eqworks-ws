@@ -6,8 +6,9 @@ import useSupercluster from 'use-supercluster';
 import { generateEvents, generatePoints } from '../lib/utils';
 import MapOverlay from '../components/MapOverlay';
 import styles from '../styles/pages/Map.module.scss';
+import getEventsInRange from '../lib/map';
 
-const Map = (props) => {
+const Map = ({ data }) => {
 
   const map = useRef();
   const [viewport, setViewport] = useState({
@@ -24,9 +25,12 @@ const Map = (props) => {
     return () => window.removeEventListener('resize', updateSize)
   }, []);
 
-  let markers = generatePoints(props.data.poi);
-  let events = generateEvents(props.data);
-
+  const [selected, setSelected] = useState({});
+  const [from, setFrom] = useState(new Date("01/01/2017"));
+  const [to, setTo] = useState(new Date());
+  const [results, setResults] = useState(getEventsInRange(data, from, to));
+  let markers = data.markers;
+  
   const bounds = map.current
     ? map.current
         .getMap()
@@ -42,12 +46,13 @@ const Map = (props) => {
     options: { radius: 75, maxZoom: 16 },
   });
 
-  console.log(clusters);
-
   return (
     <div style={{flex: 1}}>
 
-      <MapOverlay/>
+      <MapOverlay 
+        selected={selected}
+        results={results}
+      />
 
       <ReactMapGL
         {...viewport}
@@ -86,7 +91,7 @@ const Map = (props) => {
                     });
                   }}
                 >
-                  *{p.properties.point_count}
+                  *{p.properties.point_count} Locations
                 </div>
               </Marker>
             );
@@ -98,7 +103,12 @@ const Map = (props) => {
                 longitude={lon}
                 latitude={lat}
               >
-                <div className={styles.marker}>
+                <div 
+                  className={styles.marker}
+                  onClick={() => {
+                    setSelected(p);
+                  }}
+                >
                   {p.name}
                 </div>
               </Marker>

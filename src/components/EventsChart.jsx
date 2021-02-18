@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { Charts, ChartContainer, ChartRow, YAxis, BarChart, styler } from "react-timeseries-charts";
-import { TimeSeries, Index, sum, filter } from "pondjs";
+import { 
+  Charts, 
+  ChartContainer, 
+  ChartRow, 
+  YAxis, 
+  BarChart, 
+  styler, 
+  Resizable 
+} from "react-timeseries-charts";
+import { TimeSeries, Index } from "pondjs";
 import moment from 'moment';
-import Resizable from 'react-timeseries-charts/lib/components/Resizable';
 import styles from '../styles/components/Chart.module.scss';
 
-const Chart = ({ data }) => {
+const EventsChart = ({ data }) => {
 
   const getSeries = (subdata, timeFormat) => {
     return new TimeSeries({
@@ -91,4 +98,4 @@ const Chart = ({ data }) => {
   );
 }
 
-export default Chart;
+export default EventsChart;

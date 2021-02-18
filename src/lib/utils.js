@@ -1,6 +1,7 @@
 // utils to shape API data
 
 function generateEvents(data){
+  // generates mock individual event data
   if(!data)
     return [];
 
@@ -13,14 +14,14 @@ function generateEvents(data){
     return { 
       ...v, 
       ...poi[i],
-      ...formatDates(v.date),
-      hour: formatHour(v.hour)
+      ...formatDates(v.date)
     };
   });
-  return events.reverse();
+  data.all_events = events.reverse();
 }
 
 function generateStats(data){
+  // formats stats data
   if(!data)
     return [];
 
@@ -29,15 +30,15 @@ function generateStats(data){
     return { 
       ...v, 
       ...formatDates(v.date),
-      hour: formatHour(v.hour),
       revenue: `$${parseInt(v.revenue).toFixed(2)}`
     };
   });
-  return stats.reverse();
+  data.stats_hourly = stats.reverse();
 }
 
-function generatePoints(poi){
-  return poi.map((p) => ({
+function generatePoints(data){
+  // generates point GeoJSON-compliant point data
+  let markers = data.poi.map((p) => ({
     type: "Feature",
     id: p.poi_id,
     name: p.name,
@@ -46,20 +47,32 @@ function generatePoints(poi){
     },
     geometry: { type: "Point", coordinates: [p.lon, p.lat] }
   }));
+  data.markers = markers;
 }
 
 function mergeDateHour(data){
+  // sets date attribute to correct hour
   data.events_hourly.map((v) => {
     let d = new Date(v.date);
     d.setHours(d.getHours() + v.hour)
     v.date = d.toISOString();
+    v.hour = formatHour(v.hour);
   });
 
   data.stats_hourly.map((v) => {
     let d = new Date(v.date);
     d.setHours(d.getHours() + v.hour)
     v.date = d.toISOString();
-  });}
+    v.hour = formatHour(v.hour);
+  });
+
+  data.all_events.map((v) => {
+    let d = new Date(v.date);
+    d.setHours(d.getHours() + v.hour)
+    v.date = d.toISOString();
+    v.hour = formatHour(v.hour);
+  });
+}
 
 function formatDates(date){
   let d = new Date(date);

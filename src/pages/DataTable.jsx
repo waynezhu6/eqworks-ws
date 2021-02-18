@@ -3,7 +3,7 @@ import Table from '../components/Table';
 import { generateEvents, generateStats } from '../lib/utils';
 import styles from '../styles/pages/DataTable.module.scss';
 
-const DataTable = (props) => {
+const DataTable = ({ data }) => {
 
   const [selected, setSelected] = useState(0);
   const labels = ["Events", "Stats", "Points of Interest"];
@@ -31,7 +31,7 @@ const DataTable = (props) => {
           <Table 
             key={i}
             config={v.columns} 
-            data={v.data(props.data)}
+            data={data[v.field]}
             visible={selected == i}
           />
         ))}
@@ -57,7 +57,7 @@ const CONFIG = [
         { Header: "Location", accessor: "name" }
       ]
     }],
-    data: (d) => generateEvents(d)
+    field: "all_events"
   },
 
   {
@@ -75,7 +75,7 @@ const CONFIG = [
         { Header: "Revenue", accessor: "revenue" }
       ]
     }],
-    data: (d) => generateStats(d)
+    field: "stats_hourly"
   },
 
   {
@@ -87,7 +87,7 @@ const CONFIG = [
         { Header: "Name", accessor: "name" }
       ]
     }],
-    data: (d) => d.poi
+    field: "poi"
   },
 ]
 

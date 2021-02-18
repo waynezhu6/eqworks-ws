@@ -13,7 +13,7 @@ import Map from './pages/Map';
 import { getAllApiData } from './lib/api';
 import BounceLoader from 'react-spinners/BounceLoader';
 import Visualizations from './pages/Visualizations';
-import { mergeDateHour } from './lib/utils';
+import { generateEvents, generatePoints, generateStats, mergeDateHour } from './lib/utils';
 
 const App = () => {
 
@@ -24,7 +24,11 @@ const App = () => {
     // fetch data on first load
     const getData = async() => {
       let res = await getAllApiData();
+      generateEvents(res);
+      generateStats(res);
+      generatePoints(res);
       mergeDateHour(res);
+      console.log(res);
       setData(res);
     }
     getData();

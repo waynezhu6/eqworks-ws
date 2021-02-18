@@ -28,7 +28,7 @@
     padding: 0px 10px;
   }
 
-  tr:hover{
+  tbody tr:nth-child(even){
     background-color: #F7F7F7;
   }
 
