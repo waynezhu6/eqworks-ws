@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Table from '../components/Table';
-import { generateEvents, generateStats } from '../lib/utils';
 import styles from '../styles/pages/DataTable.module.scss';
 
 const DataTable = ({ data }) => {

@@ -1,4 +1,4 @@
-const API_ADDRESS = "https://sprinkle-defiant-schooner.glitch.me/api";
+const API_ADDRESS = "https://oval-peppermint-mink.glitch.me/api";
 
 const getAllApiData = async() => {
   return {
